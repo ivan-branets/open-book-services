@@ -1,0 +1,70 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Open Book
+# during dev, should point to your local machine
+host: localhost:10010
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /contacts:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: contracts
+    put:
+      description: Creates Book Contract 
+      # used as the method name of the controller
+      operationId: put
+      parameters:
+        - in: body
+          name: contract
+          description: The contract to create.
+          schema:
+            type: object
+            required:
+              - bookId
+              - authorWalletAddresses
+            properties:
+              bookId:
+                type: string
+              authorWalletAddresses:
+                type: array
+                items:
+                  type: string
+      responses:
+        "201":
+          description: Created
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/CreateContactResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /swagger:
+    x-swagger-pipe: swagger_raw
+# complex objects have schema definitions
+definitions:
+  CreateContactResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: object
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string
