@@ -33,10 +33,13 @@ paths:
             type: object
             required:
               - bookId
+              - bookPrise
               - authorWalletAddresses
             properties:
               bookId:
                 type: string
+              bookPrise:
+                type: number
               authorWalletAddresses:
                 type: array
                 items:
