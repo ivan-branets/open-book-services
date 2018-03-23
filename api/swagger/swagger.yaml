@@ -14,17 +14,42 @@ schemes:
 # format of bodies a client can send (Content-Type)
 consumes:
   - application/json
+  - multipart/form-data
 # format of the responses to the client (Accepts)
 produces:
   - application/json
 paths:
+  /assets:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: assets
+    put:
+      description: Creates Asset and upload it into bucket 
+      # used as the method name of the controller
+      operationId: putAsset
+      parameters:
+       - in: formData
+         name: file
+         description: The file to upload
+         required: true
+         type: file
+      responses:
+        "201":
+          description: Created
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/CreateResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /contacts:
     # binds a127 app logic to a route
     x-swagger-router-controller: contracts
     put:
       description: Creates Book Contract 
       # used as the method name of the controller
-      operationId: put
+      operationId: putContact
       parameters:
         - in: body
           name: contract
@@ -32,13 +57,13 @@ paths:
           schema:
             type: object
             required:
-              - bookId
-              - bookPrise
+              - assetId
+              - assetPrise
               - authorWalletAddresses
             properties:
-              bookId:
+              assetId:
                 type: string
-              bookPrise:
+              assetPrise:
                 type: number
               authorWalletAddresses:
                 type: array
@@ -49,7 +74,7 @@ paths:
           description: Created
           schema:
             # a pointer to a definition
-            $ref: "#/definitions/CreateContactResponse"
+            $ref: "#/definitions/CreateResponse"
         # responses may fall through to errors
         default:
           description: Error
@@ -59,7 +84,7 @@ paths:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
 definitions:
-  CreateContactResponse:
+  CreateResponse:
     required:
       - message
     properties:

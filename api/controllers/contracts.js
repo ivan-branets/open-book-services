@@ -1,5 +1,5 @@
 module.exports = {
-    put: put
+    putContact: putContact
 };
 
 const Web3 = require('web3');
@@ -16,9 +16,9 @@ AssetContract.defaults({
     gas: 4712388
 });
 
-function put(req, res) {
+function putContact(req, res) {
     const contract = req.swagger.params.contract.value;
-    AssetContract.new(contract.bookId, contract.bookPrise, contract.authorWalletAddresses).then((instance) => {
+    AssetContract.new(contract.assetId, contract.assetPrise, contract.authorWalletAddresses).then((instance) => {
         res.status(201).json(
             {
                 message: {
