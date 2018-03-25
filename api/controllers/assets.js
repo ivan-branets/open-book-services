@@ -7,8 +7,8 @@ const path = require('path')
 const AWS = require('aws-sdk');
 
 const BUCKET_NAME = 'ivan-bucket-1';
-const IAM_USER_KEY = 'AKIAIIPJ2MSLF5LRO4TQ';
-const IAM_USER_SECRET = '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';
+const IAM_USER_KEY = 'AKIAI4O55RYUPK7FQOOA';
+const IAM_USER_SECRET = 'fBV5tjPlr//8IoDKXmxn1KCiLmZ7WGqTRX0r0ej_';
 
 function putAsset(req, res) {
   const file = req.swagger.params.file.value;
