@@ -3,9 +3,11 @@ module.exports = {
 };
 
 const Web3 = require('web3');
-const provider = new Web3.providers.HttpProvider("http://etherbokydum.westeurope.cloudapp.azure.com:8545");
 const contract = require("truffle-contract");
 const fs = require("fs");
+
+const provider = new Web3.providers.HttpProvider("http://etherbokydum.westeurope.cloudapp.azure.com:8545");
+const web3 = new Web3(provider);
 const AssetContractJson = JSON.parse(fs.readFileSync("build/contracts/AssetContract.json"));
 
 AssetContract = contract(AssetContractJson)
@@ -18,13 +20,13 @@ AssetContract.defaults({
 
 function putContact(req, res) {
     const contract = req.swagger.params.contract.value;
-    AssetContract.new(contract.assetId, contract.assetPrise, contract.authorWalletAddresses).then((instance) => {
-        res.status(201).json(
-            {
+    AssetContract.new(contract.assetId, web3.toWei(contract.assetPrise), contract.authorWalletAddresses)
+        .then(async (instance) => {
+            await instance.setRevenueRate(contract.authorWalletAddresses[0], 1000000);
+            res.status(201).json({
                 message: {
                     contactAddress: instance.address
                 }
-            }
-        );    
-    });
+            });
+        });
 }
