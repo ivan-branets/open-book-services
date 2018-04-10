@@ -1,10 +1,6 @@
-module.exports = {
-    putContact: putContact
-};
-
-const Web3 = require('web3');
-const contract = require("truffle-contract");
-const fs = require("fs");
+import Web3 from 'web3';
+import contract from 'truffle-contract';
+import fs from 'fs';
 
 //const providerUrl = "http://etherbokydum.westeurope.cloudapp.azure.com:8545";
 const providerUrl = "http://localhost:8545";
@@ -22,6 +18,9 @@ AssetContract.setProvider(provider);
 AssetRegistry.setProvider(provider);
 
 let registry = null;
+AssetRegistry.new().then(instance => {
+    registry = instance;
+});
 
 web3.eth.getAccounts((error, accounts) => {
     AssetContract.defaults({
@@ -35,11 +34,7 @@ web3.eth.getAccounts((error, accounts) => {
     });
 });
 
-AssetRegistry.new().then(instance => {
-    registry = instance;
-});
-
-function putContact(req, res) {
+export function putContact(req, res) {
     const contract = req.swagger.params.contract.value;
     registry.deployAssetContract(contract.assetId, web3.toWei(contract.assetPrise), contract.authorWalletAddresses)
         .then(async txReceipt => {
