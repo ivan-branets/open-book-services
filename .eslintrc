@@ -1,0 +1,19 @@
+{
+	"extends": "eslint",
+	"parser": "babel-eslint",
+	"env": {
+		"node": true
+	},
+	"rules": {
+		"quotes": [2, "single"],
+		"require-jsdoc": [1, {
+			"require": {
+				"FunctionDeclaration": false,
+				"MethodDefinition": false,
+				"ClassDeclaration": false
+			}
+		}],
+		"newline-after-var": "off",
+		"no-underscore-dangle": "off"
+	}
+}

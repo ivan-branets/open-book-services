@@ -17,6 +17,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-preset-env": "^1.6.1",
+    "eslint-config-eslint": "^4.0.0",
     "should": "^7.1.0",
     "supertest": "^1.0.0",
     "truffle": "^4.1.3"
