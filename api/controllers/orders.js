@@ -29,10 +29,27 @@ export function putOrder(req, res) {
 
     AssetContract.at(o.assetAddress).then(async assetContract => {
         const assetId = await assetContract.assetId.call();
-        res.status(201).json({
-            message: {
-                url: `https://s3-us-west-2.amazonaws.com/ivan-bucket-1/${assetId}.pdf`
-            }
-        });
+        const price = await assetContract.price.call();
+
+        try {
+            const tx = await web3.eth.sendTransaction({
+                from: o.buyerAddress,
+                to: o.assetAddress,
+                value: price
+            });
+
+            res.status(201).json({
+                message: {
+                    url: `https://s3-us-west-2.amazonaws.com/ivan-bucket-1/${assetId}.pdf`,
+                    transaction: tx
+                }
+            });
+        } catch (error) {
+            res.status(500).json({
+                message: {
+                    message: error
+                }
+            });
+        }
     });
 }
