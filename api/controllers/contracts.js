@@ -17,12 +17,6 @@ const AssetRegistry = contract(AssetRegistryJson);
 AssetContract.setProvider(provider);
 AssetRegistry.setProvider(provider);
 
-let registry = null;
-
-AssetRegistry.new().then(instance => {
-    registry = instance;
-});
-
 web3.eth.getAccounts((error, accounts) => {
     AssetContract.defaults({
         from: accounts[0],
@@ -33,6 +27,11 @@ web3.eth.getAccounts((error, accounts) => {
         from: accounts[0],
         gas: 4712388
     });
+});
+
+let registry = null;
+AssetRegistry.new().then(instance => {
+    registry = instance;
 });
 
 export function putContact(req, res) {

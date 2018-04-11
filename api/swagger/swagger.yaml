@@ -80,6 +80,38 @@ paths:
           description: Error
           schema:
             $ref: "#/definitions/ErrorResponse"
+  /orders:
+    # binds a127 app logic to a route
+    x-swagger-router-controller: orders
+    put:
+      description: Creates Book Order 
+      # used as the method name of the controller
+      operationId: putOrder
+      parameters:
+        - in: body
+          name: order
+          description: The Book Order to create.
+          schema:
+            type: object
+            required:
+              - assetAddress
+              - buyerAddress
+            properties:
+              assetAddress:
+                type: string
+              buyerAddress:
+                type: string
+      responses:
+        "201":
+          description: Created
+          schema:
+            # a pointer to a definition
+            $ref: "#/definitions/CreateResponse"
+        # responses may fall through to errors
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
   /swagger:
     x-swagger-pipe: swagger_raw
 # complex objects have schema definitions
